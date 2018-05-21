@@ -48,7 +48,7 @@ class Game
         if ready == "Y"
             play
         elsif ready == "N"
-            "Vuelve cuando te sientas preparado"
+            puts "Vuelve cuando te sientas preparado"
         end        
     end
 

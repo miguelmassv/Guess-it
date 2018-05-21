@@ -12,7 +12,7 @@ require 'pry'
 #   si la respuesta es correcta cambiar estado de solucionado a true
 #   sino volver a preguntar hasta responder correctamente
 # 4. Siguiente pregunta
-#    cuando todas las preguntas este respuestas salir del juego
+#    cuando todas las preguntas esten respuestas salir del juego
 
 class ReadFile
     attr_reader :Q_A
@@ -29,16 +29,51 @@ class ReadFile
                 i = 0
                 file_info.each do |info|
                   line = info.chomp.split('-')
-                #   binding.pry
                   @Q_A[i] = {question: line[0], answer: line[1], done: false}
                   i+=1
                 end
               end
-              return @Q_A
-            
+              return @Q_A            
         end
   end
   
-  archivo = ReadFile.new('q_a.txt')
-    # binding.pry
-  puts archivo.Q_A
+
+
+
+class Game
+    def initialize        
+        @questions = ReadFile.new('q_a.txt').Q_A  
+        puts "Bienvenido a Guess it, Para jugar, solo ingresa el termino correcto para cada una de las definiciones, Listo? (Y/N)"
+        ready = gets.chomp
+        if ready == "Y"
+            play
+        elsif ready == "N"
+            "Vuelve cuando te sientas preparado"
+        end        
+    end
+
+    def play
+        puts    
+        @questions.each do |question|
+            while question[:done] === false
+                puts "-------------------"
+                puts "Definición:"
+                puts question[:question]
+                puts
+                puts "Adivina: "
+                answer = gets.chomp
+                puts
+                if answer === question[:answer]
+                    question[:done] = true
+                    puts "Correcto!"
+                else
+                    puts "Incorrecto!, intentalo de nuevo"               
+                end
+            end
+        end
+        puts
+        puts "Felicitaciones has respondido todas las preguntas"
+    end
+end
+
+Game.new
